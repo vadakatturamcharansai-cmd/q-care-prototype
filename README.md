@@ -1,36 +1,63 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Q-CARE: Predictive Hospital Resource Replanning
 
-## Getting Started
+## Problem
+Hospital operational bottlenecks (like ICU overcrowding, bed shortages, and staff imbalances) often cascade, disrupting multiple departments simultaneously. By the time an overload is detected, reactive measures are expensive, stressful, and reduce the quality of care. 
 
-First, run the development server:
+## Solution
+Q-CARE anticipates near-future resource pressure and generates a feasible resource reallocation plan BEFORE the bottleneck occurs. Instead of reacting to an overload, administrators can proactively shift resources, adhering to all operational constraints simultaneously.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+**Disclaimer:** Q-CARE is strictly an operational decision-support system. Clinical diagnoses, treatment recommendations, and autonomous clinical decisions are explicitly **out of scope**.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Prototype Features
+- **Live Resource State Dashboard**: High-level view of beds, ICU occupancy, staff, OR, and emergency reserve.
+- **6-Hour Predictive Forecast**: Deterministic timeline forecasting when capacity will breach safe operating thresholds.
+- **Automated Bottleneck Detection**: Early-warning alerts specifying the expected pressure window and severity.
+- **Feasible Replanning Generator**: Evaluates candidates and suggests optimal resource shifts (e.g., reassigning staff, reserving beds, delaying procedures).
+- **Interactive Scenario Simulator**: Test dynamic environments like ICU Surges, Staff Shortages, or Emergency Spikes instantly.
+- **Impact Summary (Before & After)**: Visualize the immediate operational impact of accepting the recommended plan.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Architecture
+**Current Prototype:**
+- Next.js (App Router)
+- TypeScript
+- Tailwind CSS & Framer Motion (for dynamic UI)
+- Deterministic simulation logic and synthetic state generation
+- Hosted on Vercel
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+**Future Production Architecture:**
+- Python FastAPI Backend
+- XGBoost / LightGBM Forecasting
+- OR-Tools (Classical MILP) for optimization baseline
+- D-Wave Ocean SDK (QUBO) for hybrid quantum-assisted search
+- Real-time EMR / HL7 data ingestion
 
-## Learn More
+*Note: This prototype utilizes deterministic simulation and synthetic operational data for immediate hackathon demonstration.*
 
-To learn more about Next.js, take a look at the following resources:
+## How to Run Locally
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/vadakatturamcharansai-cmd/q-care-prototype.git
+   cd q-care-prototype
+   ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+2. **Install dependencies:**
+   ```bash
+   npm install
+   ```
 
-## Deploy on Vercel
+3. **Start the development server:**
+   ```bash
+   npm run dev
+   ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+4. **View the app:**
+   Open `http://localhost:3000` in your browser.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Demo Scenarios
+Navigate to the "Scenario Simulator" to test predefined states. The **RUN DEMO** button in the top right will automatically trigger a complete end-to-end presentation flow featuring an **ICU SURGE** detection and subsequent plan generation.
+
+## Deployment
+The live demo is seamlessly deployed to Vercel via automatic branch deployments on `main`.
+
+**Important:** This repository and Vercel project represent the permanent production URLs. All future updates are pushed directly to `main` for automatic redeployment to the original URL.
